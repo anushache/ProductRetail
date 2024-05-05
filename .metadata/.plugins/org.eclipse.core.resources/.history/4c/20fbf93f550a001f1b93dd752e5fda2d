@@ -1,0 +1,21 @@
+package com.example.demo.Service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.example.demo.Repository.ApprovalQueueRepository;
+import com.example.demo.utility.Product;
+
+public class ApprovalQueueService {
+
+	
+	@Autowired
+    private ApprovalQueueRepository approvalQueueRepository;
+    
+    public void addToApprovalQueue(Product product) {
+    	ApprovalQueue approvalQueue = new ApprovalQueue();
+        approvalQueue.setProduct(product);
+        approvalQueue.setRequestDate(LocalDateTime.now());
+        approvalQueue.setStatus(ApprovalStatus.PENDING);
+        approvalQueueRepository.save(approvalQueue);
+
+}

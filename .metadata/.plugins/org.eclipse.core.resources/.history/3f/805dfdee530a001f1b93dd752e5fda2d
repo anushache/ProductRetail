@@ -1,0 +1,31 @@
+package com.example.demo.Service;
+
+import java.math.BigDecimal;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.example.demo.DTO.ProductDTO;
+import com.example.demo.Repository.ApprovalQueueRepository;
+import com.example.demo.Repository.ProductRepository;
+import com.example.demo.utility.Product;
+
+@Service
+public class ProductService {
+	
+	 @Autowired
+	    private ProductRepository productRepository;
+	    
+	    @Autowired
+	    private ApprovalQueueRepository approvalQueueRepository;
+	    
+	    public Product createProduct(Product product) throws Exception {
+	        BigDecimal price =  product.getPrice();
+	    }
+	    public Product saveProductDetails(Product product)
+	    {
+			return productRepository.saveAll(product);
+	    	
+	    }
+
+}

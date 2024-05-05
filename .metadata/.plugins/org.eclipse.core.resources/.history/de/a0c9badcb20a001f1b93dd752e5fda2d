@@ -1,0 +1,81 @@
+package com.example.demo.Service;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
+import org.springframework.stereotype.Service;
+
+import com.example.demo.DTO.ProductDTO;
+import com.example.demo.Repository.ApprovalQueueRepository;
+import com.example.demo.Repository.ProductRepository;
+import com.example.demo.utility.ApprovalStatus;
+import com.example.demo.utility.Product;
+
+@Service
+public class ProductService {
+	
+	 @Autowired
+	    private ProductRepository productRepository;
+	    
+	    @Autowired
+	    private ApprovalQueueRepository approvalQueueRepository;
+	    
+	    @Autowired
+	    private ApprovalQueueService approvalQueueService;
+	    
+	    public Product saveProductDetails(Product product) throws Exception {
+	        BigDecimal price =  product.getPrice();
+	        if (price.compareTo(BigDecimal.valueOf(10000)) > 0) {
+	            throw new Exception("Price cannot exceed $10,000");
+	        }
+	        
+	        Product prod = new Product();
+	        product.setProductName(product.getProductName());
+	        product.setPrice(price);
+	        product.setActive(true);
+	        
+	        if (price.compareTo(BigDecimal.valueOf(5000)) > 0) {
+	            prod.setStatus(ApprovalStatus.PENDING);
+	            approvalQueueService.addToApprovalQueue(product);
+	        } else {
+	            product.setStatus(ApprovalStatus.APPROVED);
+	        }
+	        
+	        return productRepository.save(product);
+	        
+	        
+	    }
+
+		public void deleteProduct(Integer productID) {
+			Product product1=null;
+			try {
+				product1 = productRepository.findById(productID)
+				        .orElseThrow(() -> new NotFoundException());
+			} catch (NotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		        
+		        productRepository.delete(product1);
+		        approvalQueueService.addToApprovalQueue(product1);
+
+			
+		}
+
+		/*
+		 * public List<Product> listActiveProductsByLatestFirst() {
+		 * 
+		 * return productRepository.findByActiveOrderByCreatedAtDesc(); }
+		 */
+
+		public List<Product> searchProducts(String productName, BigDecimal minPrice, BigDecimal maxPrice,
+				LocalDateTime minPostedDate, LocalDateTime maxPostedDate) {
+			// TODO Auto-generated method stub
+			return productRepository.searchProducts(productName, minPrice, maxPrice, minPostedDate, maxPostedDate);
+		}
+
+		
+}

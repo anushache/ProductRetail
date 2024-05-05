@@ -1,0 +1,28 @@
+package com.example.demo.Service;
+
+import java.time.LocalDateTime;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.example.demo.Repository.ApprovalQueueRepository;
+import com.example.demo.utility.Product;
+import com.example.demo.utility.ApprovalQueue;
+import com.example.demo.utility.ApprovalStatus;
+
+@Service
+public class ApprovalQueueService {
+
+	
+	@Autowired
+    private ApprovalQueueRepository approvalQueueRepository;
+    
+    public void addToApprovalQueue(Product product) {
+    	
+    	ApprovalQueue approvalQueue = new ApprovalQueue();
+        approvalQueue.setProduct(product);
+        approvalQueue.setRequestDate(LocalDateTime.now());
+        approvalQueue.setStatus(ApprovalStatus.PENDING);
+        approvalQueueRepository.save(approvalQueue);
+    }
+}

@@ -1,0 +1,18 @@
+package com.example.demo.ExceptionHandler;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+
+@ControllerAdvice
+public class ExceptionHandlerController {
+	
+	@ExceptionHandler(ValidationException.class)
+	public ResponseEntity<String> validationException(ValidationException validException)
+	{
+		return new ResponseEntity<String>("The product is created successfully",HttpStatus.CREATED);
+		
+	}
+
+}

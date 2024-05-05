@@ -1,0 +1,47 @@
+package com.example.demo.Service;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.*;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.example.demo.Repository.ApprovalQueueRepository;
+import com.example.demo.utility.Product;
+import com.example.demo.utility.ApprovalQueue;
+import com.example.demo.utility.ApprovalStatus;
+
+@Service
+public class ApprovalQueueService {
+
+	
+	@Autowired
+    private ApprovalQueueRepository approvalQueueRepository;
+    
+    public void addToApprovalQueue(Product product) {
+    	
+    	ApprovalQueue approvalQueue = new ApprovalQueue();
+        approvalQueue.setProduct(product);
+        approvalQueue.setRequestDate(LocalDateTime.now());
+        approvalQueue.setStatus(ApprovalStatus.PENDING);
+        approvalQueueRepository.save(approvalQueue);
+    }
+
+	public List<ApprovalQueue> getProductsInApprovalQueue() {
+		 List<ApprovalQueue> approvalQueueItems = approvalQueueRepository.findAllByOrderByRequestDateAsc();
+	        List<ApprovalQueue> approvalQueueItemDTOs = new ArrayList<>();
+
+	        for (ApprovalQueue approvalQueueItem : approvalQueueItems) {
+	            ApprovalQueue approvalQueueItemDTO = new ApprovalQueue();
+	            approvalQueueItemDTO.setId(approvalQueueItem.getId());
+	            approvalQueueItemDTO.setProduct(approvalQueueItem.getProduct().getProductID());
+	            approvalQueueItemDTO.setProductName(approvalQueueItem.getProduct().getName());
+	            approvalQueueItemDTO.setRequestDate(approvalQueueItem.getRequestDate());
+	            approvalQueueItemDTO.setStatus(approvalQueueItem.getStatus());
+	            approvalQueueItemDTOs.add(approvalQueueItemDTO);
+	        }
+
+	        return approvalQueueItemDTOs;
+	}
+}

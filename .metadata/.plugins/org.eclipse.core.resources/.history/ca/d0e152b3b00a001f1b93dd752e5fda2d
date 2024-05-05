@@ -1,0 +1,30 @@
+package com.example.demo.Repository;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.function.Function;
+
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.repository.query.FluentQuery.FetchableFluentQuery;
+
+import com.example.demo.utility.Product;
+
+public class ProductRepoImpl implements ProductRepository{
+
+	
+
+	
+	
+	
+
+
+	@Override
+	public List<Product> findByActiveOrderByCreatedAtDesc(boolean b) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

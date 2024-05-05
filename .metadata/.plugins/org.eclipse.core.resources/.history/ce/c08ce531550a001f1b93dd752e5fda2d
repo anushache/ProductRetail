@@ -1,0 +1,12 @@
+package com.example.demo.Service;
+
+import com.example.demo.utility.Product;
+
+public class ApprovalQueueService {
+
+	public void addToApprovalQueue(Product product) {
+		// TODO Auto-generated method stub
+		
+	}
+
+}
